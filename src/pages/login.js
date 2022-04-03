@@ -1,17 +1,33 @@
 import React, { useState } from "react";
-import Input from "../components/input";
-import axios from "axios";
+import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
+import { userLogin } from "../services/login";
 
 const Login = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    navigate("jobs");
+    setError([]);
+
+    userLogin(username, password)
+      .then((res) => {
+        navigate("jobs");
+      })
+      .catch((err) => {
+        console.log(err.response.status);
+        if (err.response.status == 422) {
+          const resError = err.response.data.validationErrors.map(
+            (msg) => msg.message
+          );
+
+          setError(resError);
+        }
+      });
   };
 
   return (
@@ -26,6 +42,10 @@ const Login = () => {
           <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
+
+          <p className="text-xs text-center text-red-500">
+            {error.length ? error.map((e) => e) : ""}
+          </p>
         </div>
         <form
           class="mt-8 space-y-6"
@@ -41,6 +61,7 @@ const Login = () => {
               placeholder="Username"
               type="text"
               required={true}
+              handleChange={(e) => setUsername(e.target.value)}
             />
 
             <Input
@@ -49,6 +70,7 @@ const Login = () => {
               placeholder="password"
               type="password"
               required={true}
+              handleChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
