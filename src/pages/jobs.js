@@ -12,8 +12,11 @@ const Jobs = () => {
     fullTime: 0,
   });
   const [jobs, setJobs] = useState([]);
+  const [page, setPage] = useState(1);
 
   const handleFilter = (description, location, fullTime) => {
+    setPage(1);
+
     setFilter({
       description,
       location,
@@ -24,17 +27,38 @@ const Jobs = () => {
   useEffect(() => {
     fetchJobs(
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpbzIiLCJpYXQiOjE2NDg5NjI3MjB9.ltjYbtXbqydwOFWSt3YR5MqzpgaPur95GyO8eN1Mpho",
-      filter
+      filter,
+      page,
+      8
     ).then((res) => {
       setJobs(res.data);
     });
   }, [filter]);
 
+  const handleLoadMore = () => {
+    fetchJobs(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpbzIiLCJpYXQiOjE2NDg5NjI3MjB9.ltjYbtXbqydwOFWSt3YR5MqzpgaPur95GyO8eN1Mpho",
+      filter,
+      page + 1,
+      8
+    ).then((res) => {
+      if (res.data.length) {
+        const newList = jobs.concat(res.data);
+
+        setJobs(newList);
+
+        setPage(page + 1);
+      } else {
+        window.alert("no more additional jobs");
+      }
+    });
+  };
+
   return (
     <Layout>
       <JobsFilter handleFilter={handleFilter} />
 
-      <JobsList jobs={jobs} />
+      <JobsList jobs={jobs} handleLoadMore={handleLoadMore} />
     </Layout>
   );
 };

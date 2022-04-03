@@ -2,7 +2,7 @@ import React from "react";
 import Button from "./Button";
 import JobsListItem from "./JobsListItem";
 
-const JobsList = ({ jobs }) => {
+const JobsList = ({ jobs, handleLoadMore }) => {
   return (
     <div className="container-fluid mb-8 px-10">
       <div className="border border-4 px-5 bg-white py-2">
@@ -20,7 +20,7 @@ const JobsList = ({ jobs }) => {
           />
         ))}
 
-        <Button title="More Jobs" />
+        <Button title="More Jobs" handleOnClick={handleLoadMore} />
       </div>
     </div>
   );
