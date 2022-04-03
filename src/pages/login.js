@@ -3,7 +3,7 @@ import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
 import { userLogin } from "../services/auth";
 
-const Login = () => {
+const Login = ({ setToken }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState([]);
@@ -16,6 +16,8 @@ const Login = () => {
 
     userLogin(username, password)
       .then((res) => {
+        setToken(res.data.token);
+
         navigate("jobs");
       })
       .catch((err) => {

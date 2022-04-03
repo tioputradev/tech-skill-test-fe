@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import JobsFilter from "../components/JobsFilter";
 import JobsList from "../components/JobsList";
 import Layout from "../components/Layout";
 import Navbar from "../components/Navbar";
 import { fetchJobs } from "../services/jobs";
 
-const Jobs = () => {
+const Jobs = ({ token }) => {
   const [filter, setFilter] = useState({
     description: "",
     location: "",
@@ -13,6 +14,7 @@ const Jobs = () => {
   });
   const [jobs, setJobs] = useState([]);
   const [page, setPage] = useState(1);
+  const navigate = useNavigate();
 
   const handleFilter = (description, location, fullTime) => {
     setPage(1);
@@ -25,23 +27,14 @@ const Jobs = () => {
   };
 
   useEffect(() => {
-    fetchJobs(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpbzIiLCJpYXQiOjE2NDg5NjI3MjB9.ltjYbtXbqydwOFWSt3YR5MqzpgaPur95GyO8eN1Mpho",
-      filter,
-      page,
-      8
-    ).then((res) => {
+    if (!token) navigate("/");
+    fetchJobs(token, filter, page, 8).then((res) => {
       setJobs(res.data);
     });
   }, [filter]);
 
   const handleLoadMore = () => {
-    fetchJobs(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpbzIiLCJpYXQiOjE2NDg5NjI3MjB9.ltjYbtXbqydwOFWSt3YR5MqzpgaPur95GyO8eN1Mpho",
-      filter,
-      page + 1,
-      8
-    ).then((res) => {
+    fetchJobs(token, filter, page + 1, 8).then((res) => {
       if (res.data.length) {
         const newList = jobs.concat(res.data);
 

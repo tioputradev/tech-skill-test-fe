@@ -18,3 +18,13 @@ export const fetchJobs = async (accessToken, filter, page, limit) => {
 
   return data.data;
 };
+
+export const fetchJobById = async (accessToken, id) => {
+  const data = await axios.get(`${process.env.REACT_APP_SERVER}/jobs/${id}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  return data.data;
+};
