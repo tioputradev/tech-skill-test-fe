@@ -3,8 +3,9 @@ import Layout from "../components/Layout";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { fetchJobById } from "../services/jobs";
+const parse = require("html-react-parser");
 
-const JobDetail = () => {
+const JobDetail = ({ token }) => {
   const [detail, setDetail] = useState({
     type: "",
     url: "",
@@ -22,10 +23,7 @@ const JobDetail = () => {
   useEffect(() => {
     const jobId = params.jobId;
 
-    fetchJobById(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRpbzIiLCJpYXQiOjE2NDg5NjI3MjB9.ltjYbtXbqydwOFWSt3YR5MqzpgaPur95GyO8eN1Mpho",
-      jobId
-    ).then((res) => {
+    fetchJobById(token, jobId).then((res) => {
       setDetail(res.data);
     });
   }, []);
@@ -45,13 +43,7 @@ const JobDetail = () => {
 
           <div className="border-b-2 mb-4"></div>
           <div className="grid grid-cols-1 lg:grid-cols-12">
-            <div className="col-span-8">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: detail.description,
-                }}
-              />
-            </div>
+            <div className="col-span-8">{parse(detail.description)}</div>
 
             <div className="col-span-4">
               {/* Company */}
