@@ -8,14 +8,17 @@ const JobsList = ({ jobs }) => {
       <div className="border border-4 px-5 bg-white py-2">
         <h1 className="text-2xl font-bold mb-4 mt-4">Jobs List</h1>
 
-        <JobsListItem
-          id="id"
-          company="Trade Republic"
-          type="Full Time"
-          title="Data Engineer"
-          location="Berlin"
-          createdAt={new Date()}
-        />
+        {jobs.map((job) => (
+          <JobsListItem
+            key={job.id}
+            id={job.id}
+            company={job.company}
+            type={job.type}
+            title={job.title}
+            location={job.location}
+            createdAt={new Date(job.created_at)}
+          />
+        ))}
 
         <Button title="More Jobs" />
       </div>

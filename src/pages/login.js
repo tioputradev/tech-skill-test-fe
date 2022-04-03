@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../components/Input";
 import { useNavigate } from "react-router-dom";
-import { userLogin } from "../services/login";
+import { userLogin } from "../services/auth";
 
 const Login = () => {
   const [username, setUsername] = useState();
@@ -73,20 +73,6 @@ const Login = () => {
               handleChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          {/* <div class="flex items-center justify-between">
-            <div class="text-sm">
-              <p>
-                Does not have an account ?{" "}
-                <a
-                  href="#"
-                  class="font-medium text-indigo-600 hover:text-indigo-500"
-                >
-                  Register Here
-                </a>
-              </p>
-            </div>
-          </div> */}
 
           <div>
             <button

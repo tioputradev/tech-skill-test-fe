@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const JobsListItem = ({ id, title, company, type, location, createdAt }) => {
   return (
-    <div className="border-t-2">
+    <div className="border-t-2 py-3">
       <div className="grid grid-cols-12">
         <div className="col-span-6">
           <Link to={`/jobs/${id}`}>
